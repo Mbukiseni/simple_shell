@@ -20,7 +20,7 @@ char *rmComment(char *str)
 				return (NULL);
 			}
 
-			if (str[i - 1] == '\t' || str[i - 1] == ';' || str[i - 1] == '')
+			if (str[i - 1] == '\t' || str[i - 1] == ';' || str[i - 1] == ' ')
 				upto = i;
 		}
 	}
@@ -93,7 +93,7 @@ int shellExit(data_t *param)
 
 /**
  * exit_frm_wait - exit from wait
- * @status: status
+ * @status: status of wait
  * @param: data parameter
  * Return: nothing
  */
