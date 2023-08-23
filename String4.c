@@ -1,9 +1,9 @@
 #include "main.h"
 
 /**
- * isInt - check is string is an int
+ * isInt - check string as an int
  * @str: string arg
- * Return: 0 if an INT 1 if otherwise
+ * Return: 0 if an INT and 1 if otherwise
  */
 int isInt(char *str)
 {
@@ -24,7 +24,7 @@ int isInt(char *str)
 
 
 /**
- * print_number - prints integers numbers
+ * print_number - prints int numbers
  * @n: inter to print to consol
  * Return nothin
  */
