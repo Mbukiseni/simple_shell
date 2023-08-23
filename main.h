@@ -137,9 +137,6 @@ typedef struct builtInFunc
 	void freeArray(char **array);
 	void shellLoop(data_t *param);
 
-	/*setPath.c*/
-	int handle_path(data_t *param);
-
 	/*stdlib.c*/
 	void *_realloc(char *ptr, unsigned int len, unsigned int new_len);
 	void copyPtr(char **ptr, size_t *ptr_len, char *buf, size_t buf_len);
