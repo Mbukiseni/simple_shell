@@ -1,20 +1,31 @@
 #include "main.h"
 
 /**
- * freeArray - free array of strings
- * @array: string array to free
+ * freeParam - free param struct members
+ * @param: data parameter
+ * Return: nothing
+ */
+void freeParam(data_t *param)
+{
+	freeArray(param->args);
+	freeArray(param->_environ);
+}
+
+/**
+ * freeArray - free string array
+ * @array: array to free
  * Return: nothing
  */
 
 void freeArray(char **array)
 {
-	int i = 0;
+	int j = 0;
 
 	if (array != NULL)
 	{
-		while (array[i] != NULL)
+		while (array[j] != NULL)
 		{
-			free(array[i++]);
+			free(array[j++]);
 		}
 		free(array);
 	}
@@ -22,91 +33,74 @@ void freeArray(char **array)
 }
 
 /**
- * freeParam - free structure param
- * @param: program data param
+ * shellLoop - main loop
+ * @param: data parameter
  * Return: nothing
  */
-void freeParam(data_t *param)
-{
-	freeArray(param->args);
-	freeArray(param->_environ);
 
+void shellLoop(data_t *param)
+{
+	ssize_t buffer = 32, status = 0;
+	char *line_string = NULL;
+
+	do {
+		if (interactive(param))
+			_puts("$ ");
+		status = getline(&line_string, (size_t *)&buffer, stdin);
+		if (status == -1)
+		{
+			param->arg = line_string;
+			handle_getlin_err(param);
+		}
+		if (word_count(line_string) == 0 || line_string == NULL)
+		{
+			free(line_string);
+			line_string = NULL;
+			continue;
+		}
+		else
+		{
+			param->arg = line_string;
+			param->args = split_tok(line_string, " ");
+			if (shellExit(param))
+				break;
+			executeShell(param);
+		}
+		free(line_string);
+		freeArray(param->args);
+		line_string = NULL;
+		param->args = NULL;
+	} while (status + 1);
 
 }
 
-
 /**
- * _atoi - convert char to int
- *
- * @s: char value
- *
+ * _atoi - convert string to int
+ * @s: string to convert
  * Return: converted int
  */
 
 int _atoi(char *s)
 {
-	unsigned int result = 0;
 	int i = 0;
 	int n = 0;
-	int min = 1;
+	unsigned int res = 0;
+	int minimum = 1;
 
 	while (s[i])
 	{
 		if (s[i] == 45)
-			min *= -1;
-		while (s[i] >= 48 && s[i] <= 57)
+			minimum *= -1;
+		while (s[i] <= 57 && s[i] >= 48)
 		{
 			n = 1;
-			result = (result * 10) + (s[i] - '0');
+			res = (res * 10) + (s[i] - '0');
 			i++;
 		}
 		if (n == 1)
 			break;
 		i++;
 	}
-	result *= min;
-	return (result);
+	res *= minimum;
+	return (res);
 }
-
-/**
- * shellLoop - simple shell loop
- * @param: command arguments array
- * Return: nothing
- */
-
-void shellLoop(data_t *param)
-{
-	char *line_str = NULL;
-	ssize_t buf = 32, status = 0;
-
-	do {
-		if (interactive(param))
-			_puts("$ ");
-		status = getline(&line_str, (size_t *)&buf, stdin);
-		if (status == -1)
-		{
-			param->arg = line_str;
-			handle_getlin_err(param);
-		}
-		if (word_count(line_str) == 0 || line_str == NULL)
-		{
-			free(line_str);
-			line_str = NULL;
-			continue;
-		}
-		else
-		{
-			param->arg = line_str;
-			param->args = split_tok(line_str, " ");
-			if (shellExit(param))
-				break;
-			executeShell(param);
-		}
-		free(line_str);
-		freeArray(param->args);
-		line_str = NULL;
-		param->args = NULL;
-	} while (status + 1);
-
-}
-
