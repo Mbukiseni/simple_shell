@@ -1,29 +1,7 @@
 #include "main.h"
 
 /**
- * setEnv - set environmental variable
- * @param: data parameter
- * Return: 1
- */
-
-int setEnv(data_t *param)
-{
-	if (param->args[1] != NULL && param->args[2] != NULL)
-	{
-		set_env(param->args[1], param->args[2], param);
-		return (1);
-	}
-
-	_puts_err(param->av[0]);
-	_puts_err(": ");
-	_puts_err(param->args[0]);
-	_puts_err(": Ivalid variabe or value: usage: setenv VARIABLE VALUE\n");
-	return (1);
-}
-
-
-/**
- * unsetEnv - remove environmental variable
+ * unsetEnv - unset environmental variable
  * @param: data parameter
  * Return: 1
  */
@@ -31,7 +9,7 @@ int unsetEnv(data_t *param)
 {
 
 	int i;
-	char *var_env, *name_env;
+	char *varen, *nameen;
 
 	if (param->args[1] == NULL)
 	{
@@ -45,9 +23,9 @@ int unsetEnv(data_t *param)
 
 	for (i = 0; param->_environ[i]; i++)
 	{
-		var_env = _strdup(param->_environ[i]);
-		name_env = _strtok(var_env, "=");
-		if (_strcmp(name_env, param->args[1]) == 0)
+		varen = _strdup(param->_environ[i]);
+		nameen = _strtok(varen, "=");
+		if (_strcmp(nameen, param->args[1]) == 0)
 		{
 			free(param->_environ[i]);
 			while (param->_environ[i] != NULL)
@@ -55,14 +33,35 @@ int unsetEnv(data_t *param)
 				param->_environ[i] = param->_environ[i + 1];
 				i++;
 			}
-			free(var_env);
+			free(varen);
 			return (1);
 		}
-		free(var_env);
+		free(varen);
 	}
 	_puts_err(param->av[0]);
 	_puts_err(": :env variable :");
 	_puts_err(param->args[1]);
 	_puts_err(": not found\n");
+	return (1);
+}
+
+/**
+ * setEnv - set environmental variable
+ * @param: data parameter
+ * Return: 1
+ */
+
+int setEnv(data_t *param)
+{
+	if (param->args[2] != NULL && param->args[1] != NULL)
+	{
+		set_env(param->args[1], param->args[2], param);
+		return (1);
+	}
+
+	_puts_err(param->av[0]);
+	_puts_err(": ");
+	_puts_err(param->args[0]);
+	_puts_err(": Ivalid variabe or value: usage: setenv VARIABLE VALUE\n");
 	return (1);
 }
