@@ -1,75 +1,123 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * _strlen - calculates the size of a string
- * @s: the string for which to determine the length
- *
- * Return: whole number representing the extent of the string
+ * _strlen - find string length
+ * @str: string pointer
+ * Return: length of string
  */
-int _strlen(char *s)
+
+size_t _strlen(char *str)
 {
-	int i = 0;
+	size_t size = 0;
 
-	if (!s)
-		return (0);
+	if (str != NULL)
+		while (str[size] != '\0')
+			size++;
 
-	while (*s++)
-		i++;
-	return (i);
+	return (size);
 }
 
 /**
- * _strcmp - conducts a lexical comparison between two strings.
- * @s1: the 1st strang
- * @s2: the 2nd strang
+ * _strcmp - compares two strings
  *
- * Return: negative if s1 < s2, positive if s1 > s2, zero if s1 == s2
+ * @s1: 1st arg - destination string
+ *
+ * @s2: 2nd arg - source string
+ *
+ * Return: -15 if s1 is less, 0 if same and 15 is s1 is greaater s2
  */
+
 int _strcmp(char *s1, char *s2)
 {
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	if (*s1 == *s2)
-		return (0);
+	int i = 0, result = 0, len, s1_len = 0, s2_len = 0;
+
+	s1_len = _strlen(s1);
+	s2_len = _strlen(s2);
+	if (s1_len <= s2_len)
+		len = s1_len;
 	else
-		return (*s1 < *s2 ? -1 : 1);
+		len = s2_len;
+	while (i <= len)
+	{
+		result = s1[i] - s2[i];
+		if (result != 0)
+			return (result);
+		i++;
+	}
+	return (result);
 }
 
 /**
- * starts_with - verifies if "needle" commences with "haystack"
- * @haystack: string to look for
- * @needle: the portion of string to locate
+ * _strcpy - copy string
  *
- * Return: memory location of the next character in "haystack," or NULL
+ * @dest: destination string arg
+ *
+ * @src: source string arg
+ *
+ * Return: destination string
  */
-char *starts_with(const char *haystack, const char *needle)
+
+
+char *_strcpy(char *dest, char *src)
 {
-	while (*needle)
-		if (*needle++ != *haystack++)
-			return (NULL);
-	return ((char *)haystack);
+	size_t j = 0;
+
+	while (src[j] != '\0')
+	{
+		dest[j] = src[j];
+		j++;
+	}
+	dest[j] = '\0';
+
+	return (dest);
 }
 
 /**
- * _strcat - joins two strings
- * @dest: the target buffer
- * @src: the input buffer
- *
- * Return: pointer to the target buffer
+ * split_tok - splite string in array of words
+ * @str: char  string
+ * @delim: delimiter to separate words
+ * Return: array of words
  */
-char *_strcat(char *dest, char *src)
-{
-	char *ret = dest;
 
-	while (*dest)
-		dest++;
-	while (*src)
-		*dest++ = *src++;
-	*dest = *src;
-	return (ret);
+char **split_tok(char *str, const char *delim)
+{
+	size_t i = 0, wc = 0, offset = 0, j = 0, k = 0;
+	char **array = NULL;
+
+	if (str == NULL)
+		return (NULL);
+	wc = word_count(str);
+	array = malloc((wc + 2) * sizeof(*array));
+	if (array == NULL)
+	{
+		free(array);
+		return (NULL);
+	}
+	for (i = 0; str[i] != '\0'; )
+	{
+		if ((str[i] == *delim || str[i] == '\t')
+				&& i == offset && str[i + 1] != '\n')
+		{
+			i++, offset++;
+				continue;
+		}
+		if (str[i] == *delim || str[i] == '\t' || str[i + 1] == '\0')
+		{
+			if (offset == i && str[i + 1] == '\n')
+				break;
+			array[j] = malloc((i - offset + 2) * sizeof(char));
+			if (array[j] == NULL)
+				return (NULL);
+			k = 0;
+			while (offset != i && (str[offset] != *delim || str[offset] != '\t'))
+				array[j][k++] = str[offset++];
+			array[j][k] = '\0';
+			offset++, j++;
+			if (str[offset] == '\n')
+				break;
+		}
+		i++;
+	}
+	array[j] = NULL;
+	return (array);
 }

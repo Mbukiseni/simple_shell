@@ -1,93 +1,86 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * get_environ - provides a duplicate of our environment as a string array
- * @info: structure with potential points of contention. Utilised to keep
- *          constant function prototype.
- * Return: 0
+ * interactive - returns true if shell is interactive mode
+ * @param: application data
+ *Return: if interactive mode 1 else 0
  */
-char **get_environ(info_t *info)
+int interactive(data_t *param)
 {
-	if (!info->environ || info->env_changed)
-	{
-		info->environ = list_to_strings(info->env);
-		info->env_changed = 0;
-	}
-
-	return (info->environ);
+	return (isatty(STDIN_FILENO) && param->readfd <= 2);
 }
 
 /**
- * _unsetenv - Unset an environmental variable
- * @info: Structure holding possible arguments. Utilised to keep
- *        constant function prototype.
- *  Return: 1 if deletion occurs, 0 in all other cases
- * @var: the string environment variable
+ * printEnv - print environment
+ * @param: data parameter
+ * Return: 1 if success
  */
-int _unsetenv(info_t *info, char *var)
+
+int printEnv(data_t *param)
 {
-	list_t *node = info->env;
 	size_t i = 0;
-	char *p;
 
-	if (!node || !var)
-		return (0);
-
-	while (node)
+	if (param->_environ == NULL || param->args == NULL)
 	{
-		p = starts_with(node->str, var);
-		if (p && *p == '=')
-		{
-			info->env_changed = delete_node_at_index(&(info->env), i);
-			i = 0;
-			node = info->env;
-			continue;
-		}
-		node = node->next;
+		return (0);
+	}
+
+	while (param->_environ[i] != NULL)
+	{
+		_puts(param->_environ[i]);
+		_putchar('\n');
 		i++;
 	}
-	return (info->env_changed);
+
+	return (1);
+}
+
+
+/**
+ * cmp_env_name - compare environment variable name with name passed
+ * @env: environment variable
+ * @name: name to compare
+ * Return: 1 if success
+ */
+int cmp_env_name(const char *env, const char *name)
+{
+	int j;
+
+	for (j = 0; env[j] != '='; j++)
+	{
+		if (env[j] != name[j])
+		{
+			return (0);
+		}
+	}
+
+	return (j + 1);
 }
 
 /**
- * _setenv - Create new environment variable,
- *             or change an existing one
- * @info: Structure holding possible arguments. Utilised to keep
- *        constant function prototype.
- * @var: the string environment variable property
- * @value: the string environment variable value
- *  Return: 0
+ * findEnv - find environment variable
+ * @name: name of the environment variable
+ * @_environ: environment variables
+ * Return: pointer to the environment variable
  */
-int _setenv(info_t *info, char *var, char *value)
+char *findEnv(const char *name, char **_environ)
 {
-	char *buf = NULL;
-	list_t *node;
-	char *p;
+	char *ptrtoenv;
+	int i, movi;
 
-	if (!var || !value)
-		return (0);
+	ptrtoenv = NULL;
+	movi = 0;
 
-	buf = malloc(_strlen(var) + _strlen(value) + 2);
-	if (!buf)
-		return (1);
-	_strcpy(buf, var);
-	_strcat(buf, "=");
-	_strcat(buf, value);
-	node = info->env;
-	while (node)
+	for (i = 0; _environ[i]; i++)
 	{
-		p = starts_with(node->str, var);
-		if (p && *p == '=')
+		/* If name and env are equal */
+		movi = cmp_env_name(_environ[i], name);
+		if (movi)
 		{
-			free(node->str);
-			node->str = buf;
-			info->env_changed = 1;
-			return (0);
+			ptrtoenv = _environ[i];
+			break;
 		}
-		node = node->next;
 	}
-	add_node_end(&(info->env), buf, 0);
-	free(buf);
-	info->env_changed = 1;
-	return (0);
+
+	return (ptrtoenv + movi);
 }

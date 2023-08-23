@@ -1,44 +1,77 @@
-#include "shell.h"
+#include "main.h"
+
 
 /**
- * main - starting point
- * @ac: number of arguments
- * @av: argument vector
- *
- * Return: 0 on success, 1 on error
+ * setEnviron - set environ
+ * @param: data parameter
+ * @environ: environmental variables
+ * Return: nothing
  */
-int main(int ac, char **av)
+
+int setEnviron(data_t *param, char **environ)
 {
-	info_t info[] = { INFO_INIT };
-	int fd = 2;
+	unsigned int i = 0;
 
-	asm ("mov %1, %0\n\t"
-			"add $3, %0"
-			: "=r" (fd)
-			: "r" (fd));
+	param->args = NULL;
+	param->_environ = NULL;
+	param->av = NULL;
+	param->arg = NULL;
+	param->path = NULL;
+	param->env_pathstr = NULL;
+	param->lnflag = 0;
+	param->lncount = 0;
+	param->readfd = 0;
+	param->errcount = 0;
 
-	if (ac == 2)
+	while (environ[i] != NULL)
+		i++;
+
+	param->_environ =  malloc(sizeof(char *) * (i + 1));
+	if (param->_environ == NULL)
+		return (0);
+
+	for (i = 0; environ[i] != NULL; )
 	{
-		fd = open(av[1], O_RDONLY);
-		if (fd == -1)
-		{
-			if (errno == EACCES)
-				exit(126);
-			if (errno == ENOENT)
-			{
-				_eputs(av[0]);
-				_eputs(": 0: Can't open ");
-				_eputs(av[1]);
-				_eputchar('\n');
-				_eputchar(BUF_FLUSH);
-				exit(127);
-			}
-			return (EXIT_FAILURE);
-		}
-		info->readfd = fd;
+		param->_environ[i] = _strdup(environ[i]);
+		i++;
 	}
-	populate_env_list(info);
-	read_history(info);
-	hsh(info, av);
-	return (EXIT_SUCCESS);
+
+	param->_environ[i] = NULL;
+	return (1);
+}
+
+/**
+ * getSignal - get signal
+ * @signal: signal
+ */
+
+void getSignal(int __attribute__((unused)) signal)
+{
+	write(STDOUT_FILENO, "\n$ ", 3);
+}
+
+/**
+ * main - main function
+ * @ac: argument count
+ * @av: argument vector
+ * @environ: environmental variables
+ * Return: 0 on success
+ */
+
+int main(int  __attribute__((unused)) ac, char **av, char **environ)
+{
+	data_t parameter;
+
+	if (av == NULL || ac > 1)
+		return (0);
+	signal(SIGINT, getSignal);
+
+	if (!setEnviron(&parameter, environ))
+		return (0);
+	param.av = av;
+
+	shellLoop(&parameter);
+	freeParam(&parameter);
+
+	exit(0);
 }
