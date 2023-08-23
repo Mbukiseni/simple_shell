@@ -1,25 +1,15 @@
 #include "main.h"
 
 /**
- * exit_code_err - exit agg error
- * @param: data param
+ * handle_getlin_err - handle getline error
+ * @param: data parameter
  * Return: nothing
  */
-void exit_code_err(data_t *param)
+void handle_getlin_err(data_t *param)
 {
-	param->errcount++;
-	_puts_err(param->av[0]);
-	_puts_err(": ");
-	print_number(param->errcount);
-	_puts_err(": ");
-	_puts_err(param->args[0]);
-	_puts_err(": Illegal number: ");
-	_puts_err(param->args[1]);
-	_puts_err("\n");
-	if (!interactive(param))
-	{
-		free(param->arg);
-		freeParam(param);
-		exit(2);
-	}
+	if (interactive(param))
+		_putchar_err('\n');
+	free(param->arg);
+	freeParam(param);
+	exit(0);
 }
