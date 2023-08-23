@@ -11,6 +11,27 @@ int hdlCtrlCommand(data_t *param)
 	return (1);
 }
 
+
+/**
+ * cdCommand - change directory command - builtin
+ * @param: environ and args data.  args[0] = "cd".  args[1] =  directory.
+ * Return: 1 on success
+ */
+int cdCommand(data_t *param)
+{
+	if (param->args[0] == NULL)
+	{
+		_puts_err(param->av[0]);
+		_puts_err(": expected argument to \"cd\"\n");
+	}
+	else
+	{
+		if (chdir(param->args[1]) != 0)
+			_puts("$ ");
+	}
+	return (1);
+}
+
 /**
  * helpCommand - prints help to shell
  * @param: environ and args param
