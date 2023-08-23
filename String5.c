@@ -14,9 +14,9 @@ int _putchar_err(char c)
 
 
 /**
- * word_count - count words/tokens in a strings
+ * word_count - count words or tokens in a strings
  * @str: string arg
- * Return: number of words/tokens in the string arg
+ * Return: number of words or tokens in the string arg
  */
 
 int word_count(char *str)
