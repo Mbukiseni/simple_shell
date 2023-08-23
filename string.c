@@ -41,7 +41,7 @@ char **split_tok(char *str, const char *delim)
 	for (i = 0; str[i] != '\0'; )
 	{
 		if (str[i + 1] != '\n' && i == off_set &&
-				(str[i] == '\t' || str[i] == *delim ))
+				(str[i] == '\t' || str[i] == *delim))
 		{
 			i++, off_set++;
 				continue;
