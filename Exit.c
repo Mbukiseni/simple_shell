@@ -92,22 +92,15 @@ int shellExit(data_t *param)
 }
 
 /**
- * exit_code_err - print error message
- * @param: data param
+ * exit_frm_wait - exit from wait
+ * @status: status
+ * @param: data parameter
  * Return: nothing
  */
-void exit_code_err(data_t *param)
+
+void exit_frm_wait(int status, data_t *param)
 {
-	param->errcount++;
-	_puts_err(param->av[0]);
-	_puts_err(": ");
-	print_number(param->errcount);
-	_puts_err(": ");
-	_puts_err(param->args[0]);
-	_puts_err(": Illegal number: ");
-	_puts_err(param->args[1]);
-	_puts_err("\n");
-	if (!interactive(param))
+	if (WEXITSTATUS(status) == 2)
 	{
 		free(param->arg);
 		freeParam(param);
