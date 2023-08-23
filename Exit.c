@@ -1,41 +1,24 @@
 #include "main.h"
 
 /**
- * rmComment - remove comment from getline string
- * @str: string to remove comment from
- * Return: string without comment
+ * exit_frm_wait - check child pit exit code
+ * @status: status code for wait
+ * @param: data parameter
+ * Return: nothing
  */
-char *rmComment(char *str)
+
+void exit_frm_wait(int status, data_t *param)
 {
-	int i, upto;
-
-	upto = 0;
-	for (i = 0; str[i]; i++)
+	if (WEXITSTATUS(status) == 2)
 	{
-		if (str[i] == '#')
-		{
-			if (i == 0)
-			{
-				free(str);
-				return (NULL);
-			}
-
-			if (str[i - 1] == '\t' || str[i - 1] == ';' || str[i - 1] == '')
-				upto = i;
-		}
+		free(param->arg);
+		freeParam(param);
+		exit(2);
 	}
-
-	if (upto != 0)
-	{
-		str = _realloc(str, i, upto + 1);
-		str[upto] = '\0';
-	}
-
-	return (str);
 }
 
 /**
- * handle_getlin_err - handle getline error
+ * handle_getlin_err - handle -1 returned fro getline
  * @param: data parameter
  * Return: nothing
  */
@@ -50,13 +33,13 @@ void handle_getlin_err(data_t *param)
 
 /**
  * shellExit - exit shell
- * @param: data parameter
+ * @param: passed application data
  * Return: 1
  */
 
 int shellExit(data_t *param)
 {
-	int error;
+	int err;
 
 	if (_strcmp(param->args[0], "exit") == 0)
 	{
@@ -65,8 +48,8 @@ int shellExit(data_t *param)
 		{
 			if (isInt(param->args[1]))
 			{
-				error = _atoi(param->args[1]);
-				if (error < 0)
+				err = _atoi(param->args[1]);
+				if (err < 0)
 				{
 					free(param->arg);
 					freeParam(param);
@@ -74,7 +57,7 @@ int shellExit(data_t *param)
 				}
 				free(param->arg);
 				freeParam(param);
-				exit(error);
+				exit(err);
 			}
 			else
 			{
@@ -92,26 +75,35 @@ int shellExit(data_t *param)
 }
 
 /**
- * exit_code_err - print error message
- * @param: data param
- * Return: nothing
+ * rmComment - remove comment from file command
+ * @str: getline string
+ * Return: char * of removed string
  */
-void exit_code_err(data_t *param)
+char *rmComment(char *str)
 {
-	param->errcount++;
-	_puts_err(param->av[0]);
-	_puts_err(": ");
-	print_number(param->errcount);
-	_puts_err(": ");
-	_puts_err(param->args[0]);
-	_puts_err(": Illegal number: ");
-	_puts_err(param->args[1]);
-	_puts_err("\n");
-	if (!interactive(param))
-	{
-		free(param->arg);
-		freeParam(param);
-		exit(2);
-	}
-}
+	int i, up_to;
 
+	up_to = 0;
+	for (i = 0; str[i]; i++)
+	{
+		if (str[i] == '#')
+		{
+			if (i == 0)
+			{
+				free(str);
+				return (NULL);
+			}
+
+			if (str[i - 1] == ' ' || str[i - 1] == '\t' || str[i - 1] == ';')
+				up_to = i;
+		}
+	}
+
+	if (up_to != 0)
+	{
+		str = _realloc(str, i, up_to + 1);
+		str[up_to] = '\0';
+	}
+
+	return (str);
+}

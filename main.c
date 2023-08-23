@@ -1,16 +1,25 @@
 #include "main.h"
 
+/**
+ * getSignal - Handle the crtl + c
+ * @signal: Signal handler
+ */
+
+void getSignal(int __attribute__((unused)) signal)
+{
+	write(STDOUT_FILENO, "\n$ ", 3);
+}
 
 /**
  * setEnviron - set environ
- * @param: data parameter
- * @environ: environmental variables
+ * @param: new av array
+ * @environ: environ
  * Return: nothing
  */
 
 int setEnviron(data_t *param, char **environ)
 {
-	unsigned int i = 0;
+	unsigned int j = 0;
 
 	param->args = NULL;
 	param->_environ = NULL;
@@ -23,55 +32,45 @@ int setEnviron(data_t *param, char **environ)
 	param->readfd = 0;
 	param->errcount = 0;
 
-	while (environ[i] != NULL)
-		i++;
+	while (environ[j] != NULL)
+		j++;
 
-	param->_environ =  malloc(sizeof(char *) * (i + 1));
+	param->_environ =  malloc(sizeof(char *) * (j + 1));
 	if (param->_environ == NULL)
 		return (0);
 
-	for (i = 0; environ[i] != NULL; )
+	for (j = 0; environ[j] != NULL; )
 	{
-		param->_environ[i] = _strdup(environ[i]);
-		i++;
+		param->_environ[j] = _strdup(environ[j]);
+		j++;
 	}
 
-	param->_environ[i] = NULL;
+	param->_environ[j] = NULL;
 	return (1);
 }
 
 /**
- * getSignal - get signal
- * @signal: signal
- */
-
-void getSignal(int __attribute__((unused)) signal)
-{
-	write(STDOUT_FILENO, "\n$ ", 3);
-}
-
-/**
- * main - main function
- * @ac: argument count
- * @av: argument vector
+ * main - entry point
+ * @ac: unsed arg
+ * @av: command flag array
  * @environ: environmental variables
- * Return: 0 on success
+ * Return: zero on success
  */
 
 int main(int  __attribute__((unused)) ac, char **av, char **environ)
 {
-	data_t parameter;
+	data_t param;
 
 	if (av == NULL || ac > 1)
 		return (0);
 	signal(SIGINT, getSignal);
 
-	if (!setEnviron(&parameter, environ))
+	if (!setEnviron(&param, environ))
 		return (0);
-	parameter.av = av;
+	param.av = av;
 
-	shellLoop(&parameter);
-	freeParam(&parameter);
+	shellLoop(&param);
+	freeParam(&param);
 
 	exit(0);
 }

@@ -1,9 +1,9 @@
 #include "main.h"
 
 /**
- * handle_path - handle path
- * @param: data structure
- * Return: 1 on success, -1 on failure
+ * handle_path - handle command path by searching env PATH
+ * @param: app data info
+ * Return: 1 on success
  */
 int handle_path(data_t *param)
 {
@@ -15,56 +15,94 @@ int handle_path(data_t *param)
 		param->lncount++;
 		param->lnflag = 0;
 	}
+
 	path = pathSearch(param);
+
 	if (path)
 	{
 		param->path = path;
 		return (1);
 	}
 
-	if (isvalidPath(param->args[0]) && (param->args[0][0] == '/'
-				|| interactive(param) || findEnv("PATH=", param->_environ)))
+	if ((findEnv("PATH=", param->_environ) || param->args[0][0] == '/' ||
+			interactive(param)) && isvalidPath(param->args[0]))
 		return (1);
 
 	return (-1);
 }
 
+/**
+ * isvalidPath - varify executable command
+ * @path: path to inspect
+ * Return: 1 if exercutable, 0 otherwise
+ */
+int isvalidPath(char *path)
+{
+	struct stat st;
+
+	if (!path || stat(path, &st))
+		return (0);
+
+	if (st.st_mode & S_IFREG)
+		return (1);
+
+	return (0);
+}
 
 /**
- * pathSearch - search for path in env path string
+ * getenvPath - fetch a path from env PATH
+ * @envpath: ENV PATH strings
+ * @offset: starting index
+ * @limit: stopping index
+ * Return: pointer to new string
+ */
+char *getenvPath(char *envpath, int offset, int limit)
+{
+	static char strbuf[512];
+	int start = 0, i = 0;
+
+	for (i = 0, start = offset; start < limit; start++)
+		if (envpath[start] != ':')
+			strbuf[i++] = envpath[start];
+	strbuf[i] = 0;
+	return (strbuf);
+}
+
+/**
+ * pathSearch - finds command in PATH string
  * @param: data structure
- * Return: path on success, NULL on failure
+ * Return: command full path or NULL
  */
 char *pathSearch(data_t *param)
 {
-	char *path, *pathstr = NULL, *com = NULL;
 	int i = 0, offset = 0;
+	char *path, *pathstring = NULL, *command = NULL;
 
-	pathstr = findEnv("PATH=", param->_environ);
-	param->env_pathstr = pathstr;
-	com = param->args[0];
-	if (!pathstr)
+	pathstring = findEnv("PATH=", param->_environ);
+	param->env_pathstr = pathstring;
+	command = param->args[0];
+	if (!pathstring)
 		return (NULL);
-	if (_strstr(com, "./") && (_strlen(com) > 2))
+	if ((_strlen(command) > 2) && _strstr(command, "./"))
 	{
-		if (isvalidPath(com))
-			return (com);
+		if (isvalidPath(command))
+			return (command);
 	}
 	while (1)
 	{
-		if (pathstr[i] == ':' || !pathstr[i])
+		if (!pathstring[i] || pathstring[i] == ':')
 		{
-			path = getenvPath(pathstr, offset, i);
+			path = getenvPath(pathstring, offset, i);
 			if (!*path)
-				_strcat(path, com);
+				_strcat(path, command);
 			else
 			{
 				_strcat(path, "/");
-				_strcat(path, com);
+				_strcat(path, command);
 			}
 			if (isvalidPath(path))
 				return (path);
-			if (!pathstr[i])
+			if (!pathstring[i])
 				break;
 			offset = i;
 		}
@@ -72,43 +110,3 @@ char *pathSearch(data_t *param)
 	}
 	return (NULL);
 }
-
-/**
- * getenvPath - get path from env
- * @envpath: path from env
- * @offset: starting index
- * @limit: ending index
- * Return: path
- */
-char *getenvPath(char *envpath, int offset, int limit)
-{
-	static char strbuf[512];
-	int frst = 0, i = 0;
-
-	for (i = 0, frst = offset; frst < limit; frst++)
-	{
-		if (envpath[frst] != ':')
-			strbuf[i++] = envpath[frst];
-	}
-	strbuf[i] = 0;
-	return (strbuf);
-}
-
-/**
- * isvalidPath - check if path is valid
- * @path: path to check for validity
- * Return: 1 if valid, 0 if not
- */
-int isvalidPath(char *path)
-{
-	struct stat str;
-
-	if (!path || stat(path, &str))
-		return (0);
-
-	if (str.st_mode & S_IFREG)
-		return (1);
-
-	return (0);
-}
-

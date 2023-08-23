@@ -1,9 +1,9 @@
 #include "main.h"
 
 /**
- * runCdFunc - run cd command
- * @param: environ and args data
- * Return: 1 if success
+ * runCdFunc - changes current directory
+ * @param: arguments and eviron command
+ * Return: 1 on success
  */
 
 int runCdFunc(data_t *param)
@@ -19,7 +19,7 @@ int runCdFunc(data_t *param)
 		is_working_dir = _strcmp("--", directory);
 	}
 
-	if (!check_home || directory == NULL || !is_working_dir || !check_home2)
+	if (directory == NULL || !check_home || !check_home2 || !is_working_dir)
 	{
 		cd_to_home(param);
 		return (1);
@@ -31,12 +31,14 @@ int runCdFunc(data_t *param)
 		return (1);
 	}
 
-	if (_strcmp("..", directory) == 0 || _strcmp(".", directory) == 0)
+	if (_strcmp(".", directory) == 0 || _strcmp("..", directory) == 0)
 	{
 		cd_dot(param);
 		return (1);
 	}
+
 	cd_to(param);
+
 	return (1);
 }
 

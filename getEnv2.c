@@ -8,49 +8,28 @@
  */
 char *copy_info(char *name, char *value)
 {
-	char *newchar;
-	int length_name, length_value, length;
+	char *new;
+	int len_name, len_value, len;
 
-	length_name = _strlen(name);
-	length_value = _strlen(value);
-	length = length_name + length_value + 2;
-	newchar = malloc(sizeof(char) * (length));
-	_strcpy(newchar, name);
-	_strcat(newchar, "=");
-	_strcat(newchar, value);
-	_strcat(newchar, "\0");
+	len_name = _strlen(name);
+	len_value = _strlen(value);
+	len = len_name + len_value + 2;
+	new = malloc(sizeof(char) * (len));
+	_strcpy(new, name);
+	_strcat(new, "=");
+	_strcat(new, value);
+	_strcat(new, "\0");
 
-	return (newchar);
+	return (new);
 }
 
 /**
- * set_env - sets a new environment variable
- * @name: name of the environment variable
- * @value: value of the environment variable
- * @param: data parameter
- * Return: nothing
+ * interactive - returns true if shell is interactive mode
+ * @param: application data
+ *Return: if interactive mode 1 else 0
  */
-void set_env(char *name, char *value, data_t *param)
+int interactive(data_t *param)
 {
-	int i;
-	char *varia_envi, *name_envi;
-
-	for (i = 0; param->_environ[i]; i++)
-	{
-		varia_envi = _strdup(param->_environ[i]);
-		name_envi = _strtok(varia_envi, "=");
-		if (_strcmp(name_envi, name) == 0)
-		{
-			free(param->_environ[i]);
-			param->_environ[i] = copy_info(name_envi, value);
-			free(varia_envi);
-			return;
-		}
-		free(varia_envi);
-	}
-
-	param->_environ = _reallocdp(param->_environ, i, sizeof(char *) * (i + 2));
-	param->_environ[i] = copy_info(name, value);
-	param->_environ[i + 1] = NULL;
+	return (isatty(STDIN_FILENO) && param->readfd <= 2);
 }
 
