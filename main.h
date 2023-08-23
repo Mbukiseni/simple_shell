@@ -57,7 +57,7 @@ typedef struct builtInFunc
 	int (*f)(data_t *);
 } buildIn_f;
 
-	
+
 	/*builtinFunc.c */
 	int helpCommand(data_t *param);
 	int hdlCtrlCommand(data_t *param);
@@ -88,7 +88,7 @@ typedef struct builtInFunc
 	/*getLine.c*/
 	ssize_t _getline(char **f, size_t *f_len, FILE *fstream);
 	int handle_getline(data_t *param);
-	
+
 	/*lunchShell.c*/
 	int executeShell(data_t *param);
 	void Print_N_err(data_t *param);

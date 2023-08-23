@@ -16,3 +16,4 @@ void exit_frm_wait(int status, data_t *param)
 		exit(2);
 	}
 }
+

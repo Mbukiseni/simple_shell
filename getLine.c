@@ -16,13 +16,9 @@ ssize_t _getline(char **f, size_t *f_len, FILE *fstream)
 	char c = 'c', *buffer = malloc(*f_len + 1);
 
 	if (buffer == NULL)
-	{
 		return (-1);
-	}
 	if (j == 0)
-	{
 		fflush(fstream);
-	}
 	else
 		return (-1);
 

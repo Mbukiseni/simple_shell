@@ -53,3 +53,4 @@ void set_env(char *name, char *value, data_t *param)
 	param->_environ[i] = copy_info(name, value);
 	param->_environ[i + 1] = NULL;
 }
+

@@ -19,7 +19,7 @@ int runCdFunc(data_t *param)
 		is_working_dir = _strcmp("--", directory);
 	}
 
-	if ( !check_home || directory == NULL || !is_working_dir || !check_home2)
+	if (!check_home || directory == NULL || !is_working_dir || !check_home2)
 	{
 		cd_to_home(param);
 		return (1);
