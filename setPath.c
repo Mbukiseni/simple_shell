@@ -22,8 +22,8 @@ int handle_path(data_t *param)
 		return (1);
 	}
 
-	if (isvalidPath(param->args[0]) && (param->args[0][0] == '/' || interactive(param) ||
-			findEnv("PATH=", param->_environ)))
+	if (isvalidPath(param->args[0]) && (param->args[0][0] == '/' ||
+			 interactive(param) || findEnv("PATH=", param->_environ)))
 		return (1);
 
 	return (-1);
