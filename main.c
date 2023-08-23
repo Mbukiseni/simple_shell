@@ -68,7 +68,7 @@ int main(int  __attribute__((unused)) ac, char **av, char **environ)
 
 	if (!setEnviron(&parameter, environ))
 		return (0);
-	param.av = av;
+	parameter.av = av;
 
 	shellLoop(&parameter);
 	freeParam(&parameter);
