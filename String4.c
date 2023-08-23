@@ -1,54 +1,39 @@
 #include "main.h"
 
 /**
- * isInt - check string as an int
- * @str: string arg
- * Return: 0 if an INT and 1 if otherwise
- */
-int isInt(char *str)
-{
-	int str_len = _strlen(str), j = 0;
-
-	if (str == NULL)
-		return (1);
-	while (j < str_len)
-	{
-		if (str[j] > 47 && str[j] < 58)
-			j++;
-		else
-			return (0);
-	}
-
-	return (1);
-}
-
-
-/**
- * print_number - prints int numbers
- * @n: inter to print to consol
- * Return nothin
+ *  _reallocdp - reallocates a memory block using malloc and free
+ * @ptr: pointer to the memory previously allocated
+ * @size: size of ptr
+ * @new_len: new size of ptr
+ * Return: pointer to the new memory block
  */
 
-void print_number(int n)
+char **_reallocdp(char **ptr, unsigned int size, unsigned int new_len)
 {
-	unsigned int num = n;
+	unsigned int i;
+	char **new_ptr;
 
-	if (n < 0)
-	{
-		_putchar('-');
-		num = -n;
-	}
-	if (num / 10)
-	print_number(num / 10);
-	_putchar_err(num % 10 + '0');
+	if (ptr == NULL)
+		return (malloc(sizeof(char *) * new_len));
+
+	if (new_len == size)
+		return (ptr);
+
+	new_ptr = malloc(sizeof(char *) * new_len);
+	if (new_ptr == NULL)
+		return (NULL);
+
+	for (i = 0; i < size; i++)
+		new_ptr[i] = ptr[i];
+	free(ptr);
+	return (new_ptr);
 }
 
-
 /**
- * cmp_chars - compare strings
- * @str: input string.
+ * cmp_chars - compare chars in a string with a delimiter
+ * @str: string to compare.
  * @delim: delimiter.
- * Return: 1 if are equals, 0 if not.
+ * Return: 1 if true, 0 if false.
  */
 int cmp_chars(char str[], const char *delim)
 {
@@ -70,35 +55,43 @@ int cmp_chars(char str[], const char *delim)
 	return (0);
 }
 
-
 /**
- *  _reallocdp - infor
- * @ptr: ptr
- * @size: ptr lenngth
- * @new_len: new length
- * Return: char array
+ * print_number - print an integer
+ * @n: integer to print out to stdout
+ * Return: void
  */
-
-char **_reallocdp(char **ptr, unsigned int size, unsigned int new_len)
+void print_number(int n)
 {
-	char **newptr;
-	unsigned int i;
+	unsigned int numb = n;
 
-	if (ptr == NULL)
-		return (malloc(sizeof(char *) * new_len));
-
-	if (new_len == size)
-		return (ptr);
-
-	newptr = malloc(sizeof(char *) * new_len);
-	if (newptr == NULL)
-		return (NULL);
-
-	for (i = 0; i < size; i++)
-		newptr[i] = ptr[i];
-
-	free(ptr);
-
-	return (newptr);
+	if (n < 0)
+	{
+		_putchar('-');
+		numb = -n;
+	}
+	if (numb / 10)
+	print_number(numb / 10);
+	_putchar_err(numb % 10 + '0');
 }
 
+/**
+ * isInt - checks if a string is an int
+ * @str: string to check
+ * Return: 1 if true, 0 if false
+ */
+int isInt(char *str)
+{
+	int i = 0, str_len = _strlen(str);
+
+	if (str == NULL)
+		return (1);
+	while (i < str_len)
+	{
+		if (str[i] < 58 && str[i] > 47)
+			i++;
+		else
+			return (0);
+	}
+
+	return (1);
+}
