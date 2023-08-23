@@ -1,65 +1,85 @@
 #include "main.h"
 
 /**
- * _puts_err - print string
- * @str: takes string
- * Desc: print strings to stdout
+ * _puts_err - print string to stderr
+ * @str: string to print
+ * Desc: function that prints a string, to stderr
  * Return: nothing
  */
 
 int _puts_err(char *str)
 {
-	int i = 0;
+	int l = 0;
 
-	while (str[i] != '\0')
+	while (str[l] != '\0')
 	{
-		write(2, &str[i], 1);
-		i++;
+		write(2, &str[l], 1);
+		l++;
 	}
-
-	return (i);
+	return (l);
 }
 
 
 /**
- * _strdup - copy and duplicate string
+ * _strtok - splits a string into tokens
+ * @str: string to split.
+ * @delim: delimiter.
  *
- * @str: string to duplicate
- *
- * Return: NULL on failure and empty string string pointer on success
+ * Return: string splited.
  */
-
-char *_strdup(char *str)
+char *_strtok(char str[], const char *delim)
 {
-	char *buffer = 0;
-	int i = 0, len = 0;
+	unsigned int i, bool;
+	static char *splitted_str, *end_str;
+	char *str_start;
 
-	if (str == 0)
-		return (0);
-	len = _strlen(str);
-	buffer = (char *)malloc(sizeof(char) *	(len + 1));
-	if (buffer == 0)
-		return (NULL);
-	while (str[i] != '\0')
+	if (str != NULL)
 	{
-		buffer[i] = str[i];
-		i++;
+		if (cmp_chars(str, delim))
+			return (NULL);
+		splitted_str = str; /*Store first address*/
+		i = _strlen(str);
+		end_str = &str[i]; /*Store last address*/
 	}
-	buffer[i] = '\0';
+	str_start = splitted_str;
+	if (str_start == end_str) /*Reaching the end*/
+		return (NULL);
 
-	return (buffer);
+	for (bool = 0; *splitted_str; splitted_str++)
+	{
+		/*Breaking loop finding the next token*/
+		if (splitted_str != str_start)
+			if (*(splitted_str - 1) == '\0' && *splitted_str)
+				break;
+		/*Replacing delimiter for null char*/
+		for (i = 0; delim[i]; i++)
+		{
+			if (*splitted_str == delim[i])
+			{
+				*splitted_str = '\0';
+				if (splitted_str == str_start)
+					str_start++;
+				break;
+			}
+		}
+		if (*splitted_str && bool == 0) /*Str != Delim*/
+			bool = 1;
+	}
+	if (bool == 0) /*Str == Delim*/
+		return (NULL);
+	return (str_start);
 }
 
-
 /**
- * rev_string - reverses a string.
- * @s: input string.
+ * rev_string - reverses a string
+ * @s: string to reverse
  * Return: no return.
  */
 void rev_string(char *s)
 {
-	int count = 0, i, j;
 	char *str, temp;
+	int count = 0, i, j = 0;
+
 
 	while (count >= 0)
 	{
@@ -81,51 +101,28 @@ void rev_string(char *s)
 }
 
 /**
- * _strtok - splits a string by some delimiter.
- * @str: input string.
- * @delim: delimiter.
- *
- * Return: string splited.
+ * _strdup - duplicates a string
+ * @str: string to duplicate
+ * Return: pointer to duplicated string
  */
-char *_strtok(char str[], const char *delim)
+
+char *_strdup(char *str)
 {
-	static char *splitted, *str_end;
-	char *str_start;
-	unsigned int i, bool;
+	int i = 0, length = 0;
+	char *buf = 0;
 
-	if (str != NULL)
-	{
-		if (cmp_chars(str, delim))
-			return (NULL);
-		splitted = str; /*Store first address*/
-		i = _strlen(str);
-		str_end = &str[i]; /*Store last address*/
-	}
-	str_start = splitted;
-	if (str_start == str_end) /*Reaching the end*/
+	if (str == 0)
+		return (0);
+	length = _strlen(str);
+	buf = (char *)malloc(sizeof(char) *	(length + 1));
+	if (buf == 0)
 		return (NULL);
+	while (str[i] != '\0')
+	{
+		buf[i] = str[i];
+		i++;
+	}
+	buf[i] = '\0';
 
-	for (bool = 0; *splitted; splitted++)
-	{
-		/*Breaking loop finding the next token*/
-		if (splitted != str_start)
-			if (*splitted && *(splitted - 1) == '\0')
-				break;
-		/*Replacing delimiter for null char*/
-		for (i = 0; delim[i]; i++)
-		{
-			if (*splitted == delim[i])
-			{
-				*splitted = '\0';
-				if (splitted == str_start)
-					str_start++;
-				break;
-			}
-		}
-		if (bool == 0 && *splitted) /*Str != Delim*/
-			bool = 1;
-	}
-	if (bool == 0) /*Str == Delim*/
-		return (NULL);
-	return (str_start);
+	return (buf);
 }
