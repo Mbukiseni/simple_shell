@@ -2,7 +2,7 @@
 
 /**
  * _myexit - terminates the shell
- * @info: Structure holding possible arguments. Utilised to hold
+ * @info: Structure holding possible arguments.
  * immutable function declaration.
  * Return: terminates with a specified exit status
  * (0) if info.argv[0] != "exit"
@@ -31,7 +31,7 @@ int _myexit(info_t *info)
 
 /**
  * _mycd - modifies the current process's directory
- * @info: Container holding potential arguments. Utilised to keep
+ * @info: Container holding potential arguments.
  * immutable function declaration.
  * Return: Always 0
  */
@@ -81,7 +81,7 @@ int _mycd(info_t *info)
 
 /**
  * _myhelp - alters the current process's directory
- * @info:Container encompassing potential arguments. Utilised to keep
+ * @info:Container encompassing potential arguments.
  * unchangeable function declaration.
  * Return: Always 0
  */

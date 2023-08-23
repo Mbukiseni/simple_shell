@@ -2,7 +2,7 @@
 
 /**
  * _myenv - displays the current environment
- * @info: Container holding possible arguments. Utilised to keep
+ * @info: Container holding possible arguments.
  *          immutable function declaration.
  * Return: Always 0
  */
@@ -13,8 +13,8 @@ int _myenv(info_t *info)
 }
 
 /**
- * _getenv - obtains the content of an environment variable
- * @info: Container holding possible parameters. Utilised to keep
+ * _getenv - obtains the content of a variable
+ * @info: Container holding possible parameters
  * @name: name of the environment variable
  *
  * Return: value
@@ -37,8 +37,8 @@ char *_getenv(info_t *info, const char *name)
 /**
  * _mysetenv - Create a fresh environment variable,
  *             or alter an already existing variable.
- * @info: Framework comprising potential parameters. Utilised to keep
- *        constant function prototype.
+ * @info: Framework comprising potential parameters
+ *        constant function prototype
  *  Return: Always 0
  */
 int _mysetenv(info_t *info)
@@ -55,7 +55,7 @@ int _mysetenv(info_t *info)
 
 /**
  * _myunsetenv - Delete an environment variable
- * @info: Arrangement potential parameters. Utilised to keep
+ * @info: Arrangement potential parameters
  *        constant function prototype.
  * Return: Always 0
  */
@@ -75,8 +75,8 @@ int _myunsetenv(info_t *info)
 }
 
 /**
- * populate_env_list - fills data into a linked list of envir var.
- * @info: Framework holding possible parameters. Utilised to keep
+ * populate_env_list - fills data into a linked list
+ * @info: Framework holding possible parameters
  *          constant function prototype.
  * Return: Always 0
  */

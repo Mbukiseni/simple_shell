@@ -1,10 +1,10 @@
 #include "shell.h"
 
 /**
- * _strlen - calculates the size of a string
- * @s: the string for which to determine the length
+ * _strlen - calculates thestring size
+ * @s: the string to determine the length
  *
- * Return: whole number representing the extent of the string
+ * Return: whole number
  */
 int _strlen(char *s)
 {
@@ -19,7 +19,7 @@ int _strlen(char *s)
 }
 
 /**
- * _strcmp - conducts a lexical comparison between two strings.
+ * _strcmp - conducts a lexical comparison
  * @s1: the 1st strang
  * @s2: the 2nd strang
  *

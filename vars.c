@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * is_chain - check if the character in the buffer is a chaining delimiter
+ * is_chain - check if the character is delimiter
  * @info: the structure containing the parameters
  * @buf: the character buffer
  * @p: current buffer position's address
@@ -36,7 +36,7 @@ int is_chain(info_t *info, char *buf, size_t *p)
 }
 
 /**
- * check_chain - determines if linking should continue on the previous status
+ * check_chain - determines if linking should continue
  * @info: the parameter structure
  * @buf: the character buffer
  * @p: address of current position in buf
@@ -70,7 +70,7 @@ void check_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
 }
 
 /**
- * replace_alias - substitutes an aliases in the tokenized string
+ * replace_alias - substitutes an aliases
  * @info: the parameter structure
  *
  * Return: 1 if substituted, 0 otherwise
@@ -99,7 +99,7 @@ int replace_alias(info_t *info)
 }
 
 /**
- * replace_vars - substituted vars in the tokenized string
+ * replace_vars - replaced vars
  * @info: the parameter structure
  *
  * Return: 1 if replaced, 0 otherwise

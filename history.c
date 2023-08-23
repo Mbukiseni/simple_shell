@@ -1,29 +1,6 @@
 #include "shell.h"
 
 /**
- * get_history_file - finds the history file
- * @info: parameter structure
- *
- * Return: allocated string for the history file path
-
-char *get_history_file(info_t *info)
-{
-	char *buf, *dir;
-
-	dir = _getenv(info, "HOME=");
-	if (!dir)
-		return (NULL);
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
-	if (!buf)
-		return (NULL);
-	buf[0] = 0;
-	_strcpy(buf, dir);
-	_strcat(buf, "/");
-	_strcat(buf, HIST_FILE);
-	return (buf);
-}
-
-/**
  * write_history - Creates or appends to a file
  * @info: the struct containing parameters
  *
@@ -123,8 +100,8 @@ int build_history_list(info_t *info, char *buf, int linecount)
 }
 
 /**
- * renumber_history - reorders the history linked list after modifications
- * @info: structure holding possible arguments. Utilised to keep
+ * renumber_history - reorders the history linked list
+ * @info: structure holding possible arguments.
  *
  * Return: the updated value of "histcount"
  */

@@ -34,8 +34,8 @@ char *_strncpy(char *dest, char *src, int n)
  **_strncat - joins two strings
  *@dest: the 1st string
  *@src: the 2nd string
- *@n: the maximum number of bytes to utilize
- *Return: the resulting concatenated string
+ *@n: the maximum number of bytes
+ *Return: the concatenated string
  */
 char *_strncat(char *dest, char *src, int n)
 {
@@ -58,10 +58,10 @@ char *_strncat(char *dest, char *src, int n)
 }
 
 /**
- **_strchr - finds the position of a character within a string
+ **_strchr - finds the position
  *@s: the string to be analyzed
  *@c: the character to search for
- *Return: (s) a pointer to the memory location of s
+ *Return: (s) a pointer to the location of s
  */
 char *_strchr(char *s, char c)
 {

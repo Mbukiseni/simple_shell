@@ -46,7 +46,7 @@ void set_info(info_t *info, char **av)
 /**
  * free_info - releases the fields of the info_t struct
  * @info: structure address
- * @all: value of "true" when all fields are being freed
+ * @all: value of "true" when all fields are freed
  */
 void free_info(info_t *info, int all)
 {

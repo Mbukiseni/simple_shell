@@ -38,7 +38,7 @@ extern char **environ;
 
 
 /**
- * struct liststr - linked list with one reference per element
+ * struct liststr - linked list with
  * @num: the numeric field
  * @str: a sequence of characters
  * @next: references the following node
@@ -51,26 +51,26 @@ typedef struct liststr
 } list_t;
 
 /**
- * struct passinfo - stores simulated parameters for function passing,
- * enabling consistent prototype for function pointer structure
- * @arg: a string produced by getline that includes arguments
+ * struct passinfo - stores simulated parameters
+ * enabling consistent prototype
+ * @arg: a string produced by getline
  * @argv:a string array created from arguments
- * @path: a string representation of the current command's path
+ * @path: a string representation
  * @argc: the number of arguments
  * @line_count: the count of errors
  * @err_num: the error code pertaining to exit()
- * @linecount_flag: if this line of input is included in the count
+ * @linecount_flag: if this line of input
  * @fname: the name of the program file
- * @env: local duplicate of the environment in a linked list
- * @environ: personalized and altered version from the linked list "env"
+ * @env: local duplicate of the environment
+ * @environ: personalized and altered version
  * @history: the historical node
  * @alias: the node representing an alias
- * @env_changed: when there's a modification to the "environ" variable
- * @status: the exit status of the most recent executed command
- * @cmd_buf: memory location of the pointer to "cmd_buf," of command chaining
+ * @env_changed: modification to the "environ" variable
+ * @status: exit status of the most recent executed command
+ * @cmd_buf: memory location of the pointer to "cmd_buf," of
  * @cmd_buf_type: CMD_type ||, &&, ;
- * @readfd: the file descriptor used for reading line input
- * @histcount: the count of history line numbers
+ * @readfd: the file descriptor used
+ * @histcount: count of history line numbers
  */
 typedef struct passinfo
 {
@@ -100,7 +100,7 @@ typedef struct passinfo
 		0, 0, 0}
 
 /**
- * struct builtin - includes a predefined string and its associated function
+ * struct builtin - includes a predefined string
  * @type: the indicator for a built-in command
  * @func: the designated function
  */

@@ -45,7 +45,7 @@ ssize_t input_buf(info_t *info, char **buf, size_t *len)
 }
 
 /**
- * get_input - retrieves a line of text excluding the newline character
+ * get_input - retrieves a line of text
  * @info: structure for holding parameters
  *
  * Return: number of bytes that have been read
@@ -112,7 +112,7 @@ ssize_t read_buf(info_t *info, char *buf, size_t *i)
 /**
  * _getline - reads the next line from STDIN
  * @info: parameter structure
- * @ptr: address of a pointer to a buffer, can be preallocated or void
+ * @ptr: address of a pointer to a buffer
  * @length: size of preallocated ptr buffer if not void
  *
  * Return: s
@@ -164,7 +164,9 @@ int _getline(info_t *info, char **ptr, size_t *length)
  */
 void sigintHandler(__attribute__((unused))int sig_num)
 {
+
 	_puts("\n");
 	_puts("$ ");
-	_putchar(BUF_FLUSH);
+i	_putchar(BUF_FLUSH);
 }
+i

@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * _eputs - produces an output of the provided string
+ * _eputs - produces an output
  * @str: the string that will be displayed
  *
  * Return: 0
@@ -20,11 +20,11 @@ void _eputs(char *str)
 }
 
 /**
- * _eputchar - outputs the character 'c' to the standard error stream
+ * _eputchar - outputs the character 'c'
  * @c: The specific character to be displayed
  *
  * Return: On success 1.
- * On error, the function returns -1 and sets errno accordingly.
+ * On error, -1 and sets errno accordingly.
  */
 int _eputchar(char c)
 {
@@ -42,12 +42,12 @@ int _eputchar(char c)
 }
 
 /**
- * _putfd - writes the character 'c' to the provided file descriptor (fd)
+ * _putfd - writes the character 'c'
  * @c: The character to be written
- * @fd: The file descriptor to which the output will be written
+ * @fd: The file descriptor
  *
  * Return: On success 1.
- * On error, the function returns -1, and errno is adjusted accordingly.
+ * On error, -1, and errno is adjusted
  */
 int _putfd(char c, int fd)
 {
@@ -67,9 +67,9 @@ int _putfd(char c, int fd)
 /**
  * _putsfd - displays the provided string
  * @str: the string that will be displayed
- * @fd: the file descriptor to which the content will be written
+ * @fd: the file descriptor
  *
- * Return: the count of characters that have been placed.
+ * Return: the count of characters
  */
 int _putsfd(char *str, int fd)
 {
